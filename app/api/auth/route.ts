@@ -1,16 +1,16 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
-export const authOptions = {
+const handler = NextAuth({
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,  // From .env.local
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,  // From .env.local
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
   pages: {
-    signIn: "/signup", // Custom sign-in page
+    signIn: "/signup", // Redirect to your custom sign-up page
   },
-};
+});
 
-export default NextAuth(authOptions);
+export { handler as GET, handler as POST };

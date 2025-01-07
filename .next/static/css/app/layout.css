@@ -1,0 +1,328 @@
+/*!****************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[3]!./styles/globals.css ***!
+  \****************************************************************************************************************************************************************************************************************************************************************/
+/* Define color scheme using CSS variables */
+:root {
+  --blue: #9b136e;
+  --orange: #F97316;
+  --purple: #130641; /* Purple color */
+  --white: #e6e5e9;
+}
+
+/* Apply global styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--purple); /* Set the background to purple */
+  color: white;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  color: var(--orange);
+  font-family: 'Georgia', serif;
+  font-size: 3rem;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+}
+
+h2 {
+  color: var(--white);
+  font-family: 'Georgia', serif;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 10px;
+}
+
+a {
+  color: var(--blue);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Style buttons */
+button {
+  background-color: var(--blue);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-family: 'Georgia', serif;
+  font-size: 1rem;
+}
+
+button:hover {
+  background-color: var(--orange);
+}
+
+/* Navbar Styles */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--purple);
+  padding: 10px 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.navbar-logo img {
+  width: 140px;
+  height: auto;
+}
+
+.navbar-logo h1 {
+  font-family: 'Georgia', serif;
+  color: white;
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.navbar-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.navbar-links a:hover {
+  color: var(--orange);
+}
+
+/* Search bar styles */
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 20px;
+  padding: 5px 10px;
+}
+
+.search-bar input {
+  padding: 5px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  margin-left: 10px;
+}
+
+/* Footer Styles */
+footer {
+  background-color: var(--purple);
+  color: white;
+  padding: 20px;
+  width: 100%;
+  text-align: center;
+}
+
+footer p {
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Product Hover */
+.product-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar-logo {
+    margin-bottom: 10px;
+  }
+
+  .navbar-links {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .search-bar {
+    margin-top: 10px;
+    width: 100%;
+  }
+
+  .search-bar input {
+    width: 100%;
+  }
+}
+
+#map {
+  height: 300px;
+  width: 100%;
+}
+
+.products-section {
+  margin-top: 30px;
+}
+
+.products-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  justify-items: center;
+}
+
+.product-card {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.product-info {
+  margin-top: 10px;
+}
+
+.product-name {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.product-price {
+  color: var(--blue);
+  font-size: 16px;
+  font-weight: normal;
+}
+
+.category-container {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.category-button {
+  padding: 10px;
+  background-color: var(--blue);
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.category-button.active {
+  background-color: var(--orange);
+}
+
+.product-list {
+  margin-top: 20px;
+}
+
+.add-to-cart {
+  background-color: var(--blue);
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.add-to-cart:hover {
+  background-color: var(--orange);
+}
+
+/*!***************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[3]!./styles/layout.css ***!
+  \***************************************************************************************************************************************************************************************************************************************************************/
+/* styles/layout.css */
+
+.navbar {
+    width: 100%;
+    padding: 10px 20px;
+    background-color: #07967296;
+    color: white;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between; /* Space between the logo and menu */
+    align-items: center;
+    width: 100%;
+}
+
+.navbar-logo {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-logo img {
+    height: 120px; /* Adjust logo size */
+    margin-right: 10px; /* Space between the logo image and name */
+}
+
+.navbar-logo h1 {
+    font-size: 24px;
+    margin: 0;
+}
+
+.navbar-links {
+    display: flex;
+    gap: 20px;
+    margin-left: auto; /* Align the links to the far right */
+}
+
+.navbar-links a {
+    text-decoration: none;
+    color: rgb(169, 173, 175);
+    font-size: 18px;
+}
+
+.menu-icon {
+    display: none; /* Initially hidden, will show for small screens */
+    font-size: 30px;
+    cursor: pointer;
+}
+
+/* Show the menu icon on small screens */
+@media (max-width: 768px) {
+    .navbar-links {
+        display: none; /* Hide the navbar links on small screens */
+    }
+
+    .menu-icon {
+        display: block; /* Show the menu icon on small screens */
+    }
+
+    .navbar-links.active {
+        display: block; /* Display the links when the menu is open */
+        position: absolute;
+        top: 60px; /* Position the menu below the navbar */
+        left: 70%; /* Center the menu */
+        transform: translateX(-50%); /* Ensure the menu is centered */
+        width: 20%; /* Limit the width of the menu to 80% of the screen */
+        max-width: 400px; /* Set a max width to avoid the menu being too wide */
+        background-color: #4CAF50;
+        text-align: center;
+        padding: 0px 0; /* Reduce the padding to prevent overlap */
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow to make it stand out */
+        border-radius: 5px; /* Optional: Rounded corners for the menu */
+    }
+
+    .navbar-links.active a {
+        display: block;
+        padding: 10px 0;
+    }
+}
+

@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { useCart } from "../../context/CartContext";
+import { useProducts } from "../../context/ProductContext"; // Corrected path for ProductContext
 import Link from "next/link";
 
-// Define product categories and mock data
+// Define product categories
 const categories = [
   "All Products",
   "Furniture",
@@ -17,107 +18,43 @@ const categories = [
   "Beauty & Health",
 ];
 
-const allProducts = [
-  {
-    id: 61,
-    name: "Dining Table",
-    category: "Furniture",
-    price: 15000,
-    image: "/images/Dining Table.jpg",
-    description:
-      "Material: Wood. Dimensions: 150 x 80 x 75 cm. A stylish dining table for your home.",
-  },
-  { id: 1, name: "Sofa", category: "Furniture", price: 20000, image: "/images/sofa.jpg", description: "Material: Fabric, Wood. Dimensions: 200 x 90 x 85 cm. Comfortable and stylish sofa for your living room." },
-  { id: 2, name: "Dining Table", category: "Furniture", price: 15000, image: "/images/Dining Table.jpg", description: "Material: Wood. Dimensions: 150 x 80 x 75 cm. A stylish dining table for your home." },
-  { id: 3, name: "Coffee Table", category: "Furniture", price: 8000, image: "/images/Coffe Table.jpg", description: "Material: Wood, Glass. Dimensions: 120 x 60 x 45 cm. A sleek coffee table perfect for any space." },
-  { id: 4, name: "Bookshelf", category: "Furniture", price: 6000, image: "/images/Bookshelf.jpg", description: "Material: Wood. Dimensions: 90 x 30 x 180 cm. A modern bookshelf to organize your books." },
-  { id: 5, name: "Armchair", category: "Furniture", price: 7000, image: "/images/Armchair.jpg", description: "Material: Fabric, Wood. Dimensions: 80 x 75 x 90 cm. A cozy armchair for your reading nook." },
-  { id: 6, name: "Cabinet", category: "Furniture", price: 12000, image: "/images/Cabinet.jpg", description: "Material: Wood. Dimensions: 100 x 40 x 180 cm. A storage cabinet for your home." },
-  { id: 7, name: "Recliner Chair", category: "Furniture", price: 15000, image: "/images/Recliner Chair.jpg", description: "Material: Leather, Metal. Dimensions: 90 x 85 x 110 cm. A reclining chair for ultimate comfort." },
-  { id: 8, name: "TV Stand", category: "Furniture", price: 10000, image: "/images/TV Stand.jpg", description: "Material: Wood, Glass. Dimensions: 150 x 45 x 55 cm. A TV stand with ample storage space." },
-  { id: 9, name: "Bar Stool", category: "Furniture", price: 4000, image: "/images/Bar Stool.jpg", description: "Material: Wood, Metal. Dimensions: 40 x 40 x 75 cm. A stylish bar stool for your kitchen." },
-  { id: 10, name: "Dining Chairs", category: "Furniture", price: 8000, image: "/images/Dining Chairs.jpg", description: "Material: Wood, Fabric. Dimensions: 45 x 45 x 90 cm. Comfortable dining chairs for your home." },
-
-  // Additional products for other categories
-  { id: 11, name: "Blender", category: "Utensils", price: 5000, image: "/images/blender.jpg", description: "Power: 500W. Capacity: 1.5L. A powerful blender for your kitchen." },
-  { id: 12, name: "Kettle", category: "Utensils", price: 2500, image: "/images/kettle.jpg", description: "Power: 1500W. Capacity: 1.7L. An electric kettle for boiling water quickly." },
-  { id: 13, name: "Microwave", category: "Electronics", price: 10000, image: "/images/microwave.jpg", description: "Power: 800W. Capacity: 20L. A microwave for easy cooking." },
-  { id: 14, name: "Headphones", category: "Electronics", price: 7000, image: "/images/headphones.jpg", description: "Type: Over-Ear. Connectivity: Wireless. Noise-canceling headphones for an immersive experience." },
-  { id: 15, name: "IPHONE 16 PRO MAx", category: "Electronics", price: 30000, image: "/images/smartphone.jpg", description: "RAM: 8GB. ROM: 128GB. Processor:  A18 Bionic chip. CAMERA: 48 MP FRONT CAMERA, 60 MP BACK CAMERA With night view." },
-  { id: 16, name: "LENOVO THINKPAD", category: "Electronics", price: 50000, image: "/images/laptop.jpg", description: "RAM: 16GB. ROM: 512GB SSD. Processor: Intel core i7. A powerful laptop for work and play." },
-  { id: 17, name: "Nylon T-shirt", category: "Clothing", price: 1500, image: "/images/T-shirt.jpg", description: "Material: Cotton, Nylon. Size: M, L, XL. A comfortable cotton T-shirt." },
-  { id: 18, name: "Jacket", category: "Clothing", price: 3000, image: "/images/Jacket.jpg", description: "Material: Wool. Size: M, L, XL. A warm jacket for the cold weather." },
-  { id: 19, name: "Toy Car", category: "Toys", price: 1500, image: "/images/Toy Car1.jpg", description: "Material: Plastic. Dimensions: 15 x 7 x 5 cm. A fun toy car for kids to play with." },
-  { id: 20, name: "Basketball", category: "Sports", price: 2000, image: "/images/basketball.jpg", description: "Material: Rubber. Size: 7. A durable basketball for outdoor play." },
-  { id: 31, name: "Cotton T-shirt", category: "Clothing", price: 1500, image: "/images/cotton.jpg", description: "Material: Cotton. Size: M, L, XL. A comfortable cotton T-shirt." },
-  { id: 32, name: "Leather Jacket", category: "Clothing", price: 3000, image: "/images/leather.jpg", description: "Material: Wool. Size: M, L, XL. A warm jacket for the cold weather." },
-  { id: 33, name: "Jeans", category: "Clothing", price: 2500, image: "/images/Jeans.jpg", description: "Material: Denim. Size: 30, 32, 34. A pair of stylish jeans for everyday wear." },
-  { id: 34, name: "Dress", category: "Clothing", price: 3500, image: "/images/Dress.jpg", description: "Material: Polyester. Size: S, M, L. A chic dress for special occasions." },
-  { id: 35, name: "Skirt", category: "Clothing", price: 2800, image: "/images/Skirt.jpg", description: "Material: Cotton. Size: S, M, L. A fashionable skirt for everyday wear." },
-  { id: 36, name: "Sweatshirt", category: "Clothing", price: 2500, image: "/images/sweat-shirt.jpg", description: "Material: Cotton, Polyester. Size: M, L, XL. A comfortable sweatshirt for casual wear." },
-  { id: 37, name: "Blazer", category: "Clothing", price: 5000, image: "/images/blazer.jpg", description: "Material: Wool. Size: M, L, XL. A formal blazer for professional attire." },
-  { id: 38, name: "Shoes", category: "Clothing", price: 4500, image: "/images/shoes.jpg", description: "Material: Leather, Rubber. Size: 39, 40, 41. A pair of comfortable shoes for all-day wear." },
-  { id: 39, name: "Hat", category: "Clothing", price: 1200, image: "/images/Hat.jpg", description: "Material: Cotton. Size: One Size. A stylish hat for sun protection." },
-  { id: 40, name: "Scarf", category: "Clothing", price: 800, image: "/images/Scarf.jpg", description: "Material: Wool. Size: One Size. A cozy scarf for the cold season." },
-
-  // Additional Toys Products
-  { id: 41, name: "Toy Car", category: "Toys", price: 1500, image: "/images/Toy Car.jpg", description: "Material: Plastic. Dimensions: 15 x 7 x 5 cm. A fun toy car for kids to play with." },
-  { id: 42, name: "Toy Train", category: "Toys", price: 2000, image: "/images/train.jpg", description: "Material: Wood, Plastic. Dimensions: 30 x 10 x 10 cm. A classic toy train set." },
-  { id: 43, name: "Doll", category: "Toys", price: 1200, image: "/images/Doll.jpg", description: "Material: Fabric, Plastic. Dimensions: 30 cm. A soft and cute doll for kids." },
-  { id: 44, name: "Action Figure", category: "Toys", price: 1800, image: "/images/Action-figure.jpg", description: "Material: Plastic. Dimensions: 25 cm. A collectible action figure for kids." },
-  { id: 45, name: "Building Blocks", category: "Toys", price: 2500, image: "/images/building-blocks.jpg", description: "Material: Plastic. Set of 150 pieces. A set of colorful building blocks for children." },
-  { id: 46, name: "Puzzles", category: "Toys", price: 1200, image: "/images/puzzles.jpg", description: "Material: Cardboard. Pieces: 500. Engaging puzzles for kids to solve." },
-  { id: 47, name: "Toy Robot", category: "Toys", price: 2200, image: "/images/toy-robot.jpg", description: "Material: Plastic, Metal. Dimensions: 30 x 15 x 10 cm. A remote-controlled toy robot." },
-  { id: 48, name: "Toy Dinosaur", category: "Toys", price: 3000, image: "/images/toy-dinosaur.jpg", description: "Material: Plastic. Dimensions: 35 x 20 x 15 cm. A dinosaur figurine for imaginative play." },
-  { id: 49, name: "Educational Toy", category: "Toys", price: 3500, image: "/images/educational-toy.jpg", description: "Material: Wood, Plastic. Dimensions: 25 x 25 x 10 cm. A fun and educational toy for young kids." },
-  { id: 50, name: "Stuffed Animal", category: "Toys", price: 1500, image: "/images/Animal.jpg", description: "Material: Fabric. Dimensions: 30 x 20 cm. A soft stuffed animal for comfort." },
-
-  // Additional Sports Products
-  { id: 51, name: "VolleyBall", category: "Sports", price: 2000, image: "/images/volleyball.jpg", description: "Material: Rubber. Size: 5. A durable volleyball ball for outdoor play." },
-  { id: 52, name: "Football", category: "Sports", price: 2200, image: "/images/football.jpg", description: "Material: Rubber. Size: 5. A high-quality football for the game." },
-  { id: 53, name: "Baseball Bat", category: "Sports", price: 3000, image: "/images/baseball-bat.jpg", description: "Material: Wood. Length: 32 inches. A strong baseball bat for practice." },
-  { id: 54, name: "Tennis Racket", category: "Sports", price: 5000, image: "/images/tennis-racket.jpg", description: "Material: Graphite. String Tension: 50 lbs. A professional tennis racket." },
-  { id: 55, name: "Badminton Set", category: "Sports", price: 3500, image: "/images/badminton-set.jpg", description: "Material: Steel, Nylon. Set includes rackets and shuttlecocks." },
-  { id: 56, name: "Yoga Mat", category: "Sports", price: 2000, image: "/images/yoga-mat.jpg", description: "Material: PVC. Dimensions: 180 x 60 cm. A comfortable yoga mat for your practice." },
-  { id: 57, name: "Swimming Goggles", category: "Sports", price: 1000, image: "/images/swimming-goggles.jpg", description: "Material: Silicone, Plastic. Adjustable Strap. A pair of swimming goggles for clear vision." },
-  { id: 58, name: "Jump Rope", category: "Sports", price: 800, image: "/images/jump-rope.jpg", description: "Material: Plastic, Rubber. Length: 3m. A jump rope for cardio exercise." },
-  { id: 59, name: "Soccer Ball", category: "Sports", price: 2200, image: "/images/soccer-ball.jpg", description: "Material: Rubber. Size: 5. A professional soccer ball for the game." },
-  { id: 60, name: "Dumbbells", category: "Sports", price: 3000, image: "/images/dumbbells.jpg", description: "Material: Iron, Rubber. Weight: 5kg each. A set of dumbbells for weight training." },
-  { id: 62, name: "SAYONA SOUNDBAR", category: "Home & Entertainment", price: 13000, image: "/images/sayona.jpg", description: "INPUTS: AUX, USB, BLUETOOTH, SD CARD. Weight: 5kg each." },
-  { id: 63, name: "NOBEL NB856", category: "Home & Entertainment", price: 17000, image: "/images/nobel.jpg", description: "INPUTS: AUX, USB, BLUETOOTH, SD CARD: Weight: 6kg." },
-  { id: 64, name: "SONY SOUNDBAR", category: "Home & Entertainment", price: 13000, image: "/images/sony.jpg", description: "INPUTS: AUX, USB, BLUETOOTH, SD CARD. Material: Iron, Rubber." },
-  { id: 65, name: "STAR X", category: "Home & Entertainment", price: 13000, image: "/images/star.jpg", description: "INPUT: AUX,USB Weight: 4kg .Affordable home entertainment system" },
-  { id: 66, name: "ROYAL SOUND SUBWOOFER", category: "Home & Entertainment", price: 13000, image: "/images/royal.jpg", description: "INPUTS: AUX, USB, HDMI. BLUETOOTH. Weight: 5kg" },
-  { id: 67, name: "LG HOME STEREO", category: "Home & Entertainment", price: 13000, image: "/images/lg.jpg", description: "INPUTS: AUX, HDMI ARC, OPTICAL CABLE, USB, BLUETHOOTH. OUTPUT: FIVE MID RANGE SPEAKERS AND ONE BASS SPEAKER. WEIGHT: 10KGS" },
-  { id: 68, name: "vaseline men", category: "Beauty & Health", price: 400, image: "/images/vaseline.jpg", description: "Moisturizing skin care petroleum jelly" },
-  { id: 69, name: "Nivea intensive care", category: "Beauty & Health", price: 12000, image: "/images/nivea.jpg", description: "Healthy glowing skin" },
-  { id: 70, name: "Ganier", category: "Beauty & Health", price: 700, image: "/images/ganier.jpg", description: "Gets rid of dark skin and Masks" },
-  { id: 71, name: "Nice & Lovely", category: "Beauty & Health", price: 800, image: "/images/nc.jpg", description: "Moisturizing skin care petroleum jelly" },
-
-];
-
 export default function ProductsPage() {
+  const { products } = useProducts(); // Fetch products from context
   const [selectedCategory, setSelectedCategory] = useState("All Products");
-  const [products, setProducts] = useState(allProducts);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState(products || []); // Initially use all products from context
+  const { addToCart } = useCart();
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(6);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredProducts, setFilteredProducts] = useState(allProducts);
-  const { addToCart } = useCart();
+
+  // State for success message
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
+  // State for loading products
+  const [isLoading, setIsLoading] = useState(true);
 
   // Filter products based on category and search query
   useEffect(() => {
-    let filtered = allProducts;
-    if (selectedCategory !== "All Products") {
-      filtered = filtered.filter((product) => product.category === selectedCategory);
+    if (products && products.length > 0) {
+      setIsLoading(false); // Stop loading when products are available
+
+      let filtered = products;
+
+      // Filter by category
+      if (selectedCategory !== "All Products") {
+        filtered = filtered.filter((product) => product.category === selectedCategory);
+      }
+
+      // Filter by search query
+      if (searchQuery) {
+        filtered = filtered.filter((product) =>
+          product.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      }
+
+      setFilteredProducts(filtered); // Update filtered products
     }
-    if (searchQuery) {
-      filtered = filtered.filter((product) =>
-        product.name.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-    setFilteredProducts(filtered);
-  }, [selectedCategory, searchQuery]);
+  }, [products, selectedCategory, searchQuery]);
 
   // Get current products for pagination
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -127,93 +64,93 @@ export default function ProductsPage() {
   // Handle page change
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  // Calculate page numbers to show
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.ceil(filteredProducts.length / productsPerPage); i++) {
+    pageNumbers.push(i);
+  }
+
+  // Handle the addition of product to the cart
   const handleAddToCart = (product) => {
+    console.log('Adding to cart:', product); // Check if this logs correctly
     addToCart(product);
+    setShowSuccessMessage(true); // Show success message
+    setTimeout(() => {
+      setShowSuccessMessage(false); // Hide message after 3 seconds
+    }, 3000);
   };
 
+  // Show loading message while products are being fetched
+  if (isLoading) {
+    return <div>Loading products...</div>;
+  }
+
   return (
-    
     <div style={productsPageStyle}>
       {/* Navbar */}
       <div style={navbarStyle}>
-        <h1>Products</h1>
-
-        {/* Search Bar */}
+        <Link href="/" style={linkStyle}>Home</Link>
         <input
           type="text"
-          placeholder="Search products..."
+          placeholder="Search products"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           style={searchInputStyle}
         />
-
-        {/* Category Navigation */}
-        <div style={categoryNavStyle}>
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
-              style={categoryButtonStyle}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
       </div>
-
-      {/* Products List */}
-      <div style={productsListStyle}>
-        {currentProducts.length === 0 ? (
-          <p>No products available.</p>
-        ) : (
-          currentProducts.map((product) => (
-            <div key={product.id} style={productCardStyle}>
-              <img
-                src={product.image}
-                alt={product.name}
-                style={productImageStyle}
-              />
-              <div style={productDetailsStyle}>
-                <h3>{product.name}</h3>
-                <p>KSh {product.price.toLocaleString()}</p>
-                <p style={productDescriptionStyle}>{product.description}</p>
-                <button
-                  onClick={() => handleAddToCart(product)}
-                  style={addToCartButtonStyle}
-                >
-                  Add to Cart
-                </button>
-              </div>
+      
+      {/* Category Selector */}
+      <div style={categorySelectorStyle}>
+        {categories.map((category) => (
+          <button
+            key={category}
+            onClick={() => setSelectedCategory(category)}
+            style={selectedCategory === category ? activeCategoryButtonStyle : categoryButtonStyle}
+          >
+            {category}
+          </button>
+        ))}
+      </div>
+      
+      {/* Product List */}
+      <div style={productListStyle}>
+        {currentProducts.map((product) => (
+          <div key={product.id} style={productCardStyle}>
+            <div style={productImageContainerStyle}>
+              <img src={product.image} alt={product.name} style={productImageStyle} />
             </div>
-          ))
-        )}
+            <h3>{product.name}</h3>
+            <p>{product.description}</p>
+            <p>{product.price} Ksh</p>
+            <button onClick={() => handleAddToCart(product)} style={addToCartButtonStyle}>Add to Cart</button>
+          </div>
+        ))}
       </div>
+
+      {/* Success Message */}
+      {showSuccessMessage && (
+        <div style={successMessageStyle}>
+          Product added to cart!
+        </div>
+      )}
 
       {/* Pagination */}
       <div style={paginationStyle}>
-        <button
-          onClick={() => paginate(currentPage - 1)}
-          disabled={currentPage === 1}
-          style={paginationButtonStyle}
-        >
-          &lt;&lt; Prev
-        </button>
-        {[...Array(Math.ceil(filteredProducts.length / productsPerPage))].map((_, index) => (
+        {currentPage > 1 && (
+          <button onClick={() => paginate(currentPage - 1)} style={paginationButtonStyle}>{"<< Prev"}</button>
+        )}
+        {pageNumbers.slice(currentPage - 1, currentPage + 2).map((number) => (
           <button
-            key={index + 1}
-            onClick={() => paginate(index + 1)}
-            style={paginationButtonStyle}
+            key={number}
+            onClick={() => paginate(number)}
+            style={paginationNumberStyle(currentPage === number)}
           >
-            {index + 1}
+            {number}
           </button>
         ))}
-        <button
-          onClick={() => paginate(currentPage + 1)}
-          disabled={currentPage === Math.ceil(filteredProducts.length / productsPerPage)}
-          style={paginationButtonStyle}
-        >
-          Next &gt;&gt;
-        </button>
+        {currentPage < pageNumbers.length && (
+          <button onClick={() => paginate(currentPage + 1)} style={paginationButtonStyle}>{"Next >>"}</button>
+        )}
       </div>
     </div>
   );
@@ -221,87 +158,143 @@ export default function ProductsPage() {
 
 // Styles
 const productsPageStyle = {
-  textAlign: "center",
-  padding: "10px",
-  boxSizing: "border-box",
+  padding: "20px",
+  backgroundColor: "#fff",
+  color: "#333",
 };
 
 const navbarStyle = {
-  marginBottom: "20px",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginBottom: "30px",
+};
+
+const linkStyle = {
+  fontSize: "18px",
+  fontWeight: "bold",
+  textDecoration: "none",
+  color: "purple",
 };
 
 const searchInputStyle = {
   padding: "10px",
-  marginTop: "10px",
-  marginBottom: "20px",
-  width: "300px",
-  borderRadius: "5px",
+  width: "250px",
+  borderRadius: "20px",
   border: "1px solid #ccc",
+  fontSize: "16px",
 };
 
-const categoryNavStyle = {
-  marginBottom: "20px",
+const categorySelectorStyle = {
+  display: "flex",
+  justifyContent: "center",
+  marginBottom: "40px",
+  flexWrap: "wrap", // Wrap categories if too many
 };
 
 const categoryButtonStyle = {
-  margin: "5px",
-  padding: "10px",
-  borderRadius: "5px",
-  border: "1px solid #ccc",
-  cursor: "pointer",
+  padding: "12px 25px",
+  margin: "8px",
   backgroundColor: "purple",
+  border: "none",
+  cursor: "pointer",
+  color: "white",
+  fontWeight: "600",
+  borderRadius: "30px",
+  transition: "all 0.3s ease",
 };
 
-const productsListStyle = {
-  display: "flex",
-  flexWrap: "wrap",
-  justifyContent: "center",
+const activeCategoryButtonStyle = {
+  ...categoryButtonStyle,
+  backgroundColor: "orange", // Highlight active category
+};
+
+const productListStyle = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+  gap: "25px",
+  marginBottom: "40px",
 };
 
 const productCardStyle = {
-  width: "200px",
-  margin: "15px",
-  padding: "10px",
-  border: "1px solid #ddd",
-  borderRadius: "8px",
+  padding: "15px",
+  backgroundColor: "#f9f9f9",
+  borderRadius: "10px",
   textAlign: "center",
+  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+  transition: "transform 0.3s ease, box-shadow 0.3s ease",
+};
+
+const productImageContainerStyle = {
+  position: "relative",
+  height: "250px",
+  overflow: "hidden", // Prevent image overflow
+  borderRadius: "8px",
 };
 
 const productImageStyle = {
   width: "100%",
-  height: "150px",
-  objectFit: "cover",
-  borderRadius: "5px",
-};
-
-const productDetailsStyle = {
-  marginTop: "10px",
-};
-
-const productDescriptionStyle = {
-  fontSize: "12px",
-  color: "red",
+  height: "100%",
+  objectFit: "contain", // Maintain aspect ratio and prevent blurring
+  transition: "transform 0.3s ease", // Smooth zoom effect
 };
 
 const addToCartButtonStyle = {
-  backgroundColor: "#f79c42",
-  padding: "10px",
-  marginTop: "10px",
-  borderRadius: "5px",
-  cursor: "pointer",
-  border: "none",
+  backgroundColor: "orange",
   color: "white",
+  padding: "10px 25px",
+  border: "none",
+  cursor: "pointer",
+  borderRadius: "30px",
+  fontSize: "16px",
+  marginTop: "10px",
+  transition: "all 0.3s ease",
 };
 
 const paginationStyle = {
-  marginTop: "20px",
   textAlign: "center",
+  marginTop: "40px",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
 };
 
 const paginationButtonStyle = {
-  padding: "10px",
+  padding: "10px 20px",
   margin: "0 5px",
-  border: "1px solid #ccc",
-  borderRadius: "5px",
   cursor: "pointer",
+  backgroundColor: "purple",
+  color: "white",
+  border: "none",
+  borderRadius: "5px",
+  fontSize: "16px",
+  transition: "background-color 0.3s",
+};
+
+const paginationNumberStyle = (isActive) => ({
+  padding: "10px 20px",
+  margin: "0 5px",
+  cursor: "pointer",
+  backgroundColor: isActive ? "orange" : "purple",
+  color: "white",
+  border: "none",
+  borderRadius: "5px",
+  fontSize: "16px",
+  transition: "background-color 0.3s",
+});
+
+// Success Message Styles (using CSS animation)
+const successMessageStyle = {
+  position: "fixed",       // Use fixed positioning to place it relative to the viewport
+  top: "20px",            // Adjust top position to create space from the top
+  right: "20px",          // Position it on the right side
+  padding: "10px",
+  backgroundColor: "green",
+  color: "white",
+  fontSize: "18px",
+  textAlign: "center",
+  borderRadius: "5px",
+  zIndex: 1000,           // Ensure it appears above other elements
+  opacity: 1,             // Always visible during testing
+  transition: "opacity 0.5s ease",
 };

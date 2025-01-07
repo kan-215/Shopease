@@ -1,13 +1,14 @@
 "use client";
 
-import "../styles/globals.css";  // Global styles if needed
-import "../styles/layout.css";   // Import layout-specific CSS
+import "../styles/globals.css"; // Global styles
+import "../styles/layout.css"; // Layout-specific styles
 import Link from "next/link";
 import { useState } from "react";
-import { FaShoppingCart, FaUser, FaBars, FaTimes } from "react-icons/fa";
+import { FaShoppingCart, FaUser, FaBars, FaTimes, FaEnvelope } from "react-icons/fa";
 import { CartProvider } from "../context/CartContext";
 import { AuthProvider } from "../context/AuthContext";
 import { OrderProvider } from "../context/OrderContext";
+import { ProductProvider } from "../context/ProductContext";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -21,40 +22,43 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <AuthProvider>
           <CartProvider>
             <OrderProvider>
-              <header className="navbar">
-                <div className="navbar-container">
-                  <div className="navbar-logo">
-                    <Link href="/">
+              <ProductProvider>
+                <header className="navbar">
+                  <div className="navbar-container">
+                    <Link href="/" className="navbar-logo">
                       <img src="/logo.png" alt="ShopEase Logo" />
-                      <h1>ShopEase</h1>
                     </Link>
+
+                    {/* Navbar Links */}
+                    <nav className={`navbar-links ${isMenuOpen ? "active" : ""}`}>
+                      <Link href="/">Home</Link>
+                      <Link href="/products">Products</Link>
+                      <Link href="/cart">
+                        <FaShoppingCart />
+                      </Link>
+                      <Link href="/profile">
+                        <FaUser />
+                      </Link>
+                      <a href="mailto:shopease254@gmail.com" className="contact-us-link">
+                        <FaEnvelope />
+                      </a>
+                    </nav>
+
+                    {/* Hamburger Menu */}
+                    <div className="menu-icon" onClick={toggleMenu}>
+                      {isMenuOpen ? <FaTimes /> : <FaBars />}
+                    </div>
                   </div>
+                </header>
 
-                  {/* Navbar Links for Desktop */}
-                  <nav className={`navbar-links ${isMenuOpen ? "active" : ""}`}>
-                    <Link href="/">Home</Link>
-                    <Link href="/products">Products</Link>
-                    <Link href="/cart">
-                      <FaShoppingCart />
-                    </Link>
-                    <Link href="/profile">
-                      <FaUser />
-                    </Link>
-                  </nav>
+                {/* Main Content */}
+                <main>{children}</main>
 
-                  {/* Hamburger Menu for Mobile */}
-                  <div className="menu-icon" onClick={toggleMenu}>
-                    {isMenuOpen ? <FaTimes /> : <FaBars />}
-                  </div>
-                </div>
-              </header>
-
-              {/* Content of the home page */}
-              {children}
-
-              <footer>
-                <p>&copy; 2025 ShopEase. All rights reserved.</p>
-              </footer>
+                {/* Footer */}
+                <footer>
+                  <p>&copy; 2025 ShopEase. All rights reserved.</p>
+                </footer>
+              </ProductProvider>
             </OrderProvider>
           </CartProvider>
         </AuthProvider>

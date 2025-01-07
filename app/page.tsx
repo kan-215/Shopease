@@ -30,11 +30,6 @@ const products = [
   { id: 20, name: "LG Air Conditioner", price: 35000, image: "/images/air-conditioner.jpg", category: "Home Appliances", description: "Energy-efficient,<br /> 1.5 ton,<br /> fast cooling." }
 ];
 
-// Categories
-const categories = [
-  "All", "Electronics", "Computers", "Gaming", "Home Appliances", "Home Automation"
-];
-
 export default function Home() {
   const { addToCart } = useCart(); // Access the addToCart function from the context
   const [searchTerm, setSearchTerm] = useState("");
@@ -79,7 +74,7 @@ export default function Home() {
     <div className="home-container">
       <header className="navbar">
         <Link href="/" className="logo">
-          ShopEase
+          WELCOME TO SHOPEASE, YOUR ONE STOP ONLINE SHOP
         </Link>
         <input
           type="text"
@@ -92,7 +87,7 @@ export default function Home() {
 
       {/* Categories section */}
       <div className="category-container">
-        {categories.map((category) => (
+        {["All", "Electronics", "Computers", "Gaming", "Home Appliances", "Home Automation"].map((category) => (
           <button
             key={category}
             className={`category-button ${selectedCategory === category ? 'active' : ''}`}

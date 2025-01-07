@@ -1,118 +1,159 @@
 /* profile.css */
+
+/* Main Profile Container */
 .profile-container {
-    width: 100%;
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .profile-card {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
-    width: 100%;
-    background-color: #fafafa;
-  }
-  
-  .profile-header {
-    font-size: 28px;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  .profile-info {
-    width: 100%;
-    margin-bottom: 20px;
-  }
-  
-  .profile-field {
-    margin: 10px 0;
-    font-size: 16px;
-  }
-  
-  .profile-field strong {
-    color: #ff6600; /* Accent color for labels */
-  }
-  
-  .orders-section {
-    width: 100%;
-    margin-top: 30px;
-  }
-  
-  .orders-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-  }
-  
-  .orders-table th,
-  .orders-table td {
-    padding: 10px;
-    text-align: left;
-    border: 1px solid #ddd;
-  }
-  
-  .orders-table th {
-    background-color: #f7f7f7;
-    color: #333;
-  }
-  
-  .orders-table td {
-    background-color: #fff;
-  }
-  
-  .orders-table tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-  
-  .orders-table tr:hover {
-    background-color: #f1f1f1;
-  }
-  
-  .orders-section h2 {
-    font-size: 24px;
-    color: #333;
-    margin-bottom: 10px;
-  }
-  
-  .transaction-history {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-  
-  .transaction-history th,
-  .transaction-history td {
-    border: 1px solid #ddd;
-    padding: 8px;
-  }
-  
-  .transaction-history th {
-    background-color: #4CAF50;
-    color: white;
-  }
-  
-  .transaction-history tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-  
-  .transaction-history tr:hover {
-    background-color: #ddd;
-  }
-  
-  .profile-container {
-  max-width: 800px;
-  margin: auto;
+  width: 100%;
+  max-width: 900px;
+  margin: 40px auto;
   padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Profile Header */
+.profile-header {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Profile Info Card */
+.profile-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #fafafa;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+/* Profile Field Styles */
+.profile-info {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.profile-field {
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.profile-field strong {
+  color: #ff6600; /* Accent color for labels */
+}
+
+/* Welcome Message */
+.welcome-message {
+  font-size: 22px;
+  color: #4CAF50;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* Orders Section */
+.orders-section {
+  width: 100%;
+  margin-top: 30px;
+}
+
+.orders-section h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+/* Orders Table */
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.orders-table th,
+.orders-table td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.orders-table th {
+  background-color: #f7f7f7;
+  color: #333;
+}
+
+.orders-table td {
+  background-color: #fff;
+}
+
+.orders-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.orders-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Button Styling */
+button {
+  background-color: #ff6347;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #e5533f;
+}
+
+/* Logout Button */
+.logout-btn {
+  background-color: #4CAF50;
+}
+
+.logout-btn:hover {
+  background-color: #45a049;
+}
+
+/* Transaction History Table */
+.transaction-history {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.transaction-history th,
+.transaction-history td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.transaction-history th {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.transaction-history tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.transaction-history tr:hover {
+  background-color: #ddd;
+}
+
+/* List Styling */
 ul {
   list-style-type: none;
   padding: 0;
@@ -125,15 +166,11 @@ ul li {
   border-radius: 5px;
 }
 
-button {
-  background-color: #ff6347;
-  color: white;
-  padding: 8px;
+/* Divider line */
+.section-divider {
+  margin: 30px 0;
   border: none;
-  border-radius: 4px;
-  cursor: pointer;
+  border-top: 1px solid #ddd;
+  width: 100%;
 }
 
-button:hover {
-  background-color: #e5533f;
-}

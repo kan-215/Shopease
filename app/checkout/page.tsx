@@ -1,14 +1,9 @@
 "use client"; // Ensure this is a client-side component
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import dynamic from "next/dynamic"; // Dynamically import Leaflet for client-side only
-import { loadStripe } from "@stripe/stripe-js";
-
-// Dynamically import the Map component for Leaflet (SSR is disabled)
-const Map = dynamic(() => import("../../components/Map"), { ssr: false });
-
-const stripePromise = loadStripe("your-stripe-publishable-key"); // Use your actual Stripe key
+import { useOrder } from "../../context/OrderContext"; // Assuming useOrder is your custom context
+import { useCart } from "../../context/CartContext"; // Import useCart hook
 
 export default function CheckoutPage() {
   const [shippingInfo, setShippingInfo] = useState({
@@ -21,46 +16,90 @@ export default function CheckoutPage() {
   });
   const [paymentMethod, setPaymentMethod] = useState("mpesa"); // Default to Mpesa
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null); // Token for Turnstile verification
+  const turnstileRef = useRef<HTMLDivElement | null>(null);
+  const { addOrder } = useOrder(); // Assuming this context adds orders to state/context
+  const { cartItems, clearCart } = useCart(); // Get cartItems from CartContext
   const router = useRouter();
 
+  useEffect(() => {
+    const loadTurnstile = () => {
+      if (typeof window !== "undefined" && (window as any).turnstile) {
+        const turnstile = (window as any).turnstile;
+
+        turnstile.render(turnstileRef.current, {
+          sitekey: "0x4AAAAAAA4xEhIKL6Jv0pd-", // Replace with your site key
+          callback: (token: string) => {
+            setTurnstileToken(token);
+          },
+          "expired-callback": () => {
+            setTurnstileToken(null);
+          },
+          action: "manual-challenge", // Enforce manual user interaction
+        });
+      }
+    };
+
+    const script = document.createElement("script");
+    script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+    script.async = true;
+    script.onload = loadTurnstile; // Initialize widget once script loads
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
   const handleCheckout = async () => {
-    if (shippingInfo.name.trim() && shippingInfo.address.trim()) {
+    // Only proceed if shipping info is complete and Turnstile challenge is passed
+    if (shippingInfo.name.trim() && shippingInfo.address.trim() && turnstileToken) {
       setIsProcessingPayment(true);
+
+      // Prepare the order details for each product in the cart
+      const orders = cartItems.map((product) => ({
+        id: new Date().getTime(), // Generate a simple unique ID based on time
+        productName: product.productName, // Ensure this is being passed correctly
+        shippingAddress: `${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.country}`,
+        price: product.price,
+        date: new Date().toLocaleDateString(),
+      }));
+
+      // Save all orders in localStorage
+      const storedOrders = localStorage.getItem("orders");
+      const allOrders = storedOrders ? JSON.parse(storedOrders) : [];
+      allOrders.push(...orders);
+      localStorage.setItem("orders", JSON.stringify(allOrders));
+
+      // Add the orders to context
+      orders.forEach((order) => addOrder(order)); // Assuming addOrder adds each order to the context
+
+      // Clear the cart after checkout is completed
+      clearCart(); // This will reset the cart via the CartContext
 
       // Handle payment depending on the method
       if (paymentMethod === "mpesa") {
-        // Call the backend API to initiate Mpesa payment (you can pass the necessary data)
         await handleMpesaPayment();
       } else if (paymentMethod === "stripe") {
-        // Call Stripe API to handle Stripe payment (you would need to set up a backend for this)
         await handleStripePayment();
       }
 
       setIsProcessingPayment(false);
     } else {
-      alert("Please fill in the shipping details.");
+      alert("Please fill in the shipping details and complete the Turnstile challenge.");
     }
   };
 
   const handleMpesaPayment = async () => {
-    // Integrate the Mpesa payment process using your backend API
-    // Example: Call your API to initiate Mpesa payment
     console.log("Processing Mpesa payment...");
     // After successful payment
     router.push("/checkout/thank-you");
   };
 
   const handleStripePayment = async () => {
-    // Call the Stripe API (assuming you have set up a backend endpoint to handle payment)
-    const stripe = await stripePromise;
-    // You should call your backend to create a payment intent
+    // Stripe payment handling logic
+    // Example: Call your backend to create a payment intent
     // const { clientSecret } = await fetch('/api/create-payment-intent').then(res => res.json());
-
-    // const { error } = await stripe.confirmCardPayment(clientSecret, {
-    //   payment_method: {
-    //     card: cardElement, // Use Stripe Elements for Card input
-    //   },
-    // });
 
     // Handle error if any, or success
     router.push("/checkout/thank-you");
@@ -134,7 +173,13 @@ export default function CheckoutPage() {
           </label>
         </div>
 
-        <button onClick={handleCheckout} disabled={isProcessingPayment}>
+        <div>
+          <h3>Please complete the Turnstile challenge below before proceeding to payment:</h3>
+          {/* Render Turnstile widget */}
+          <div ref={turnstileRef}></div>
+        </div>
+
+        <button onClick={handleCheckout} disabled={isProcessingPayment || !turnstileToken}>
           {isProcessingPayment ? "Processing Payment..." : "Proceed to Payment"}
         </button>
       </div>

@@ -1,115 +1,193 @@
 "use client";
 
-import { useState } from "react";
-
-// Sample initial products
-const initialProducts = [
-  { id: 1, name: "Wireless Earphones", price: 3999 },
-  { id: 2, name: "Smart Watch", price: 5999 },
-];
+import { useContext, useState } from "react";
+import { ProductContext } from "../../context/ProductContext"; // Ensure the path is correct
 
 export default function AdminPage() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [products, setProducts] = useState(initialProducts);
+  const { products, addProduct, removeProduct, updateProduct, updateStockStatus } =
+    useContext(ProductContext);
+
   const [newProduct, setNewProduct] = useState({
+    id: 0,
     name: "",
-    price: "",
+    category: "",
+    price: 0,
+    image: "",
+    description: "",
+    discount: 0, // Discount percentage
   });
 
-  // Handle login
-  const handleLogin = (e) => {
-    e.preventDefault();
-    if (username === "admin" && password === "password") {
-      setIsAuthenticated(true);
-    } else {
-      alert("Invalid credentials!");
+  const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+
+  // Convert uploaded image to Base64
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>, isNew = true) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64Image = reader.result as string;
+        if (isNew) {
+          setNewProduct((prev) => ({ ...prev, image: base64Image }));
+        } else if (selectedProduct) {
+          setSelectedProduct((prev: any) => ({ ...prev, image: base64Image }));
+        }
+      };
+      reader.readAsDataURL(file);
     }
   };
 
-  // Handle adding a product
-  const handleAddProduct = (e) => {
-    e.preventDefault();
-    if (newProduct.name.trim() === "" || newProduct.price.trim() === "") {
-      alert("Please provide valid product details.");
-      return;
-    }
-
-    const newProductEntry = {
-      id: products.length + 1,
-      name: newProduct.name,
-      price: parseInt(newProduct.price, 10),
-    };
-    setProducts((prevProducts) => [...prevProducts, newProductEntry]);
-    setNewProduct({ name: "", price: "" });
+  const handleAddProduct = () => {
+    addProduct({
+      ...newProduct,
+      inStock: true, // Set initial stock status to 'in stock'
+    });
+    setNewProduct({
+      id: 0,
+      name: "",
+      category: "",
+      price: 0,
+      image: "",
+      description: "",
+      discount: 0,
+    });
   };
 
-  // Handle removing a product
-  const handleRemoveProduct = (id) => {
-    setProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
+  const handleUpdateProduct = () => {
+    if (selectedProduct) {
+      updateProduct(selectedProduct.id, {
+        ...selectedProduct,
+        price: Number(selectedProduct.price),
+        discount: Number(selectedProduct.discount),
+      });
+      setSelectedProductId(null); // Close the edit form
+      setSelectedProduct(null);
+    }
+  };
+
+  const handleRemoveProduct = (productId: number) => {
+    removeProduct(productId);
+  };
+
+  const handleStockStatusToggle = (productId: number) => {
+    const product = products.find((p: any) => p.id === productId);
+    if (product) {
+      updateStockStatus(productId, !product.inStock);
+    }
+  };
+
+  const handleSelectProduct = (product: any) => {
+    setSelectedProductId(product.id);
+    setSelectedProduct({ ...product });
   };
 
   return (
-    <div className="admin-container">
-      {!isAuthenticated ? (
-        <form onSubmit={handleLogin} className="login-form">
-          <h2>Admin Login</h2>
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <button type="submit">Login</button>
-        </form>
-      ) : (
-        <div className="admin-dashboard">
-          <h1>Admin Dashboard</h1>
+    <div>
+      <h1>Admin Dashboard</h1>
 
-          {/* Add Product Section */}
-          <form onSubmit={handleAddProduct} className="add-product-form">
-            <h2>Add Product</h2>
-            <input
-              type="text"
-              placeholder="Product Name"
-              value={newProduct.name}
-              onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
-            />
-            <input
-              type="number"
-              placeholder="Product Price"
-              value={newProduct.price}
-              onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
-            />
-            <button type="submit">Add Product</button>
-          </form>
+      {/* Add Product Form */}
+      <div>
+        <h3>Add New Product</h3>
+        <input
+          type="text"
+          placeholder="Product Name"
+          value={newProduct.name}
+          onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
+        />
+        <input
+          type="text"
+          placeholder="Category"
+          value={newProduct.category}
+          onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
+        />
+        <input
+          type="number"
+          placeholder="Price"
+          value={newProduct.price}
+          onChange={(e) => setNewProduct({ ...newProduct, price: Number(e.target.value) })}
+        />
+        <input type="file" onChange={(e) => handleImageUpload(e, true)} />
+        <textarea
+          placeholder="Description"
+          value={newProduct.description}
+          onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
+        />
+        <input
+          type="number"
+          placeholder="Discount (%)"
+          value={newProduct.discount}
+          onChange={(e) => setNewProduct({ ...newProduct, discount: Number(e.target.value) })}
+        />
+        <button onClick={handleAddProduct}>Add Product</button>
+      </div>
 
-          {/* Manage Products Section */}
-          <div className="manage-products">
-            <h2>Manage Products</h2>
-            {products && products.length > 0 ? (
-              <ul>
-                {products.map((product) => (
-                  <li key={product.id}>
-                    <h3>{product.name}</h3>
-                    <p>KSh {product.price.toLocaleString()}</p>
-                    <button onClick={() => handleRemoveProduct(product.id)}>Remove</button>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>No products available</p>
+      {/* Product List */}
+      <div className="product-list">
+        {products.map((product: any) => (
+          <div key={product.id} className="product-card">
+            <img src={product.image} alt={product.name} style={{ width: "150px" }} />
+            <h3>{product.name}</h3>
+            <p>{product.description}</p>
+            <p>Price: Ksh {product.price}</p>
+            {product.discount && <span>{product.discount}% Off</span>}
+            <p>Status: {product.inStock ? "In Stock" : "Out of Stock"}</p>
+            <button onClick={() => handleRemoveProduct(product.id)}>Remove</button>
+            <button onClick={() => handleStockStatusToggle(product.id)}>
+              {product.inStock ? "Mark as Out of Stock" : "Mark as Available"}
+            </button>
+            <button onClick={() => handleSelectProduct(product)}>Edit</button>
+
+            {/* Edit Product Form - Appears Below Product */}
+            {selectedProductId === product.id && selectedProduct && (
+              <div>
+                <h4>Edit Product: {selectedProduct.name}</h4>
+                <input
+                  type="text"
+                  value={selectedProduct.name}
+                  onChange={(e) =>
+                    setSelectedProduct({ ...selectedProduct, name: e.target.value })
+                  }
+                />
+                <textarea
+                  value={selectedProduct.description}
+                  onChange={(e) =>
+                    setSelectedProduct({ ...selectedProduct, description: e.target.value })
+                  }
+                />
+                <input
+                  type="number"
+                  value={selectedProduct.price}
+                  onChange={(e) =>
+                    setSelectedProduct({ ...selectedProduct, price: Number(e.target.value) })
+                  }
+                />
+                <input
+                  type="number"
+                  value={selectedProduct.discount}
+                  onChange={(e) =>
+                    setSelectedProduct({ ...selectedProduct, discount: Number(e.target.value) })
+                  }
+                />
+                <input
+                  type="file"
+                  onChange={(e) => handleImageUpload(e, false)}
+                />
+                <input
+                  type="checkbox"
+                  checked={selectedProduct.inStock}
+                  onChange={() =>
+                    setSelectedProduct((prev: any) => ({
+                      ...prev,
+                      inStock: !prev.inStock,
+                    }))
+                  }
+                />
+                <button onClick={handleUpdateProduct}>Save Changes</button>
+              </div>
             )}
           </div>
-        </div>
-      )}
+        ))}
+      </div>
     </div>
   );
 }
