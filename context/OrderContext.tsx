@@ -19,7 +19,7 @@ export const OrderProvider: React.FC = ({ children }) => {
   const [orders, setOrders] = useState<Order[]>([]);
 
   const addOrder = (order: Order) => {
-    setOrders((prevOrders) => [...prevOrders, order]); // Add a single order entry
+    setOrders((prevOrders) => [...prevOrders, order]);
   };
 
   return (
