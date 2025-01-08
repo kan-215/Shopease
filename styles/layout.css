@@ -1,0 +1,79 @@
+/* styles/layout.css */
+
+.navbar {
+    width: 100%;
+    padding: 10px 20px;
+    background-color: #07967296;
+    color: white;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between; /* Space between the logo and menu */
+    align-items: center;
+    width: 100%;
+}
+
+.navbar-logo {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-logo img {
+    height: 120px; /* Adjust logo size */
+    margin-right: 10px; /* Space between the logo image and name */
+}
+
+.navbar-logo h1 {
+    font-size: 24px;
+    margin: 0;
+}
+
+.navbar-links {
+    display: flex;
+    gap: 20px;
+    margin-left: auto; /* Align the links to the far right */
+}
+
+.navbar-links a {
+    text-decoration: none;
+    color: rgb(169, 173, 175);
+    font-size: 18px;
+}
+
+.menu-icon {
+    display: none; /* Initially hidden, will show for small screens */
+    font-size: 30px;
+    cursor: pointer;
+}
+
+/* Show the menu icon on small screens */
+@media (max-width: 768px) {
+    .navbar-links {
+        display: none; /* Hide the navbar links on small screens */
+    }
+
+    .menu-icon {
+        display: block; /* Show the menu icon on small screens */
+    }
+
+    .navbar-links.active {
+        display: block; /* Display the links when the menu is open */
+        position: absolute;
+        top: 60px; /* Position the menu below the navbar */
+        left: 70%; /* Center the menu */
+        transform: translateX(-50%); /* Ensure the menu is centered */
+        width: 20%; /* Limit the width of the menu to 80% of the screen */
+        max-width: 400px; /* Set a max width to avoid the menu being too wide */
+        background-color: #4CAF50;
+        text-align: center;
+        padding: 0px 0; /* Reduce the padding to prevent overlap */
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow to make it stand out */
+        border-radius: 5px; /* Optional: Rounded corners for the menu */
+    }
+
+    .navbar-links.active a {
+        display: block;
+        padding: 10px 0;
+    }
+}

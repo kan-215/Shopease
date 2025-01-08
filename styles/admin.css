@@ -1,0 +1,26 @@
+.dashboard-container {
+    padding: 20px;
+    text-align: center;
+    color: white;
+  }
+  
+  .dashboard-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+  
+  .dashboard-actions button {
+    background-color: var(--blue);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .dashboard-actions button:hover {
+    background-color: var(--orange);
+  }
+  

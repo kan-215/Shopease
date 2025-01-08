@@ -1,0 +1,262 @@
+/* Define color scheme using CSS variables */
+:root {
+  --blue: #9b136e;
+  --orange: #F97316;
+  --purple: #130641; /* Purple color */
+  --white: #e6e5e9;
+}
+
+/* Apply global styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--purple); /* Set the background to purple */
+  color: white;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  color: var(--orange);
+  font-family: 'Georgia', serif;
+  font-size: 3rem;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+}
+
+h2 {
+  color: var(--white);
+  font-family: 'Georgia', serif;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 10px;
+}
+
+a {
+  color: var(--blue);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Style buttons */
+button {
+  background-color: var(--blue);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-family: 'Georgia', serif;
+  font-size: 1rem;
+}
+
+button:hover {
+  background-color: var(--orange);
+}
+
+/* Navbar Styles */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--purple);
+  padding: 10px 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.navbar-logo img {
+  width: 140px;
+  height: auto;
+}
+
+.navbar-logo h1 {
+  font-family: 'Georgia', serif;
+  color: white;
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.navbar-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.navbar-links a:hover {
+  color: var(--orange);
+}
+
+/* Search bar styles */
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 20px;
+  padding: 5px 10px;
+}
+
+.search-bar input {
+  padding: 5px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  margin-left: 10px;
+}
+
+/* Footer Styles */
+footer {
+  background-color: var(--purple);
+  color: white;
+  padding: 20px;
+  width: 100%;
+  text-align: center;
+}
+
+footer p {
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Product Hover */
+.product-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar-logo {
+    margin-bottom: 10px;
+  }
+
+  .navbar-links {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .search-bar {
+    margin-top: 10px;
+    width: 100%;
+  }
+
+  .search-bar input {
+    width: 100%;
+  }
+}
+
+#map {
+  height: 300px;
+  width: 100%;
+}
+
+.products-section {
+  margin-top: 30px;
+}
+
+.products-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  justify-items: center;
+}
+
+.product-card {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.product-info {
+  margin-top: 10px;
+}
+
+.product-name {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.product-price {
+  color: var(--blue);
+  font-size: 16px;
+  font-weight: normal;
+}
+
+.category-container {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.category-button {
+  padding: 10px;
+  background-color: var(--blue);
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.category-button.active {
+  background-color: var(--orange);
+}
+
+.product-list {
+  margin-top: 20px;
+}
+
+.add-to-cart {
+  background-color: var(--blue);
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.add-to-cart:hover {
+  background-color: var(--orange);
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.success-message {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 10px;
+  background-color: green;
+  color: white;
+  font-size: 18px;
+  text-align: center;
+  border-radius: 5px;
+  z-index: 1000;
+  opacity: 0;
+  animation: fadeIn 3s forwards;
+}
