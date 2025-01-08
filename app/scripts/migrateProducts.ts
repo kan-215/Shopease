@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
+import { connectToDatabase } from './dbConnect';
+import Product from './models/Product';
 
+// Array of all products to migrate
 
 const allProducts = [
     {
@@ -79,11 +82,13 @@ const allProducts = [
     { id: 71, name: "Nice & Lovely", category: "Beauty & Health", price: 800, image: "/images/nc.jpg", description: "Moisturizing skin care petroleum jelly" },
   
   ];
+
 // Function to migrate products
 const migrateProducts = async () => {
   await connectToDatabase();
   try {
-    await Product.insertMany(allProducts); // Insert allProducts into the database
+    // Insert all products into the database
+    await Product.insertMany(allProducts); 
     console.log("Products migrated to MongoDB!");
   } catch (err) {
     console.error("Error migrating products:", err);
@@ -91,4 +96,5 @@ const migrateProducts = async () => {
   }
 };
 
+// Run the migration function
 migrateProducts();

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-// Sample data for orders and users (can be replaced with real data in your app)
+// Sample data for orders and users
 const orders = [
   { id: 1, user: "John Doe", status: "Pending", total: 3000 },
   { id: 2, user: "Jane Smith", status: "Completed", total: 5000 },

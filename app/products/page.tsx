@@ -285,16 +285,16 @@ const paginationNumberStyle = (isActive) => ({
 
 // Success Message Styles (using CSS animation)
 const successMessageStyle = {
-  position: "fixed",       // Use fixed positioning to place it relative to the viewport
-  top: "20px",            // Adjust top position to create space from the top
-  right: "20px",          // Position it on the right side
+  position: "fixed",
+  top: "20px",
+  right: "20px",
   padding: "10px",
   backgroundColor: "green",
   color: "white",
   fontSize: "18px",
   textAlign: "center",
   borderRadius: "5px",
-  zIndex: 1000,           // Ensure it appears above other elements
-  opacity: 1,             // Always visible during testing
+  zIndex: 1000,
+  opacity: 1,
   transition: "opacity 0.5s ease",
 };
